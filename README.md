@@ -1,6 +1,6 @@
 # Hi10Anime-Download
 
-Download Anime from hi10anime.com using Python
+Download Anime from [Hi!0Anime](hi10anime.com) using Python
 
 ## How To Use
 

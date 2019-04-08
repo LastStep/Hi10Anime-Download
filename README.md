@@ -27,7 +27,7 @@ Download Anime from [Hi10Anime](hi10anime.com) using Python
       
       if you type something else or nothing at all then it creats a text file, 
         with all the download links, in the script directory.
-        You can use those links to download the files in anyway you want
+      You can use those links to download the files in anyway you want
     ```
   
 ## To-Do

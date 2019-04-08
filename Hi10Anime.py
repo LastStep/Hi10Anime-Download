@@ -58,8 +58,7 @@ def run(anime_link):
       except:
         pass
 
-  except Exception as e:
-    print(e)
+  except:
     for quality in ['1080','720','480']:
       result, quality = Quality(quality)
       if result:

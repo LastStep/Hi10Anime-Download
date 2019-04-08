@@ -30,7 +30,7 @@ Download Anime from hi10anime.com using Python
         You can use those links to download the files in anyway you want
     ```
   
-# To-Do
+## To-Do
 
 - get links for different seasons, ovas etc in same page
 - check for other qualities (currently checks [1080p, 720p, 480p] in this order)

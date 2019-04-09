@@ -7,9 +7,9 @@ from bs4 import BeautifulSoup as bs
 def login():
   chrome.get('https://hi10anime.com/wp-login.php')
   emailfield = chrome.find_element_by_id('user_login')
-  emailfield.send_keys(sys.argv[1])
+  emailfield.send_keys(username)
   passfield = chrome.find_element_by_id('user_pass')
-  passfield.send_keys(sys.argv[2])
+  passfield.send_keys(password)
   chrome.find_element_by_name("wp-submit").click()
   sleep(2)
 
@@ -58,7 +58,8 @@ def run(anime_link):
       except:
         pass
 
-  except:
+  except Exception as e:
+    print(e)
     for quality in ['1080','720','480']:
       result, quality = Quality(quality)
       if result:
@@ -89,13 +90,16 @@ def make_file(episode_links, anime_name):
       f.write(link)
       f.write('\n')
 
-if sys.argv[0] == os.path.basename(__file__):
-  anime_link = search(sys.argv[3])
+scriptname, username, password, *anime_name, result = tuple(sys.argv) 
+	  
+if scriptname == os.path.basename(__file__):
+  anime_name = ' '.join(anime_name)
+  anime_link = search(anime_name)
   if anime_link:
     with webdriver.Chrome() as chrome:
       login()
       episode_links = run(anime_link)
-    if len(sys.argv[0]) == 5 and sys.argv[4] == 'idm':
+    if result == 'idm':
       idm(episode_links)
-    else:
+    elif result == 'txt':
       make_file(episode_links, sys.argv[3])

@@ -28,7 +28,7 @@ Download Anime from [Hi10Anime](hi10anime.com) using Python
     anime id is the id of the anime page. 
        
         You can get it by going to that page on the website and then copying the numbers at the end of the url.
-        The page looks like hi10anime.com/archives/1234 , 1234 being the anime id
+        The page looks like 'hi10anime.com/archives/1234' , '1234' being the anime id
         If you input the anime id then it would only download from that specfic page
 
     optional argument is the specification of the way you want the links

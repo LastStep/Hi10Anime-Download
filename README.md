@@ -23,10 +23,9 @@ Download Anime from [Hi10Anime](hi10anime.com) using Python
 
     optional argument is the specification of the way you want the links
       
-      if you type 'idm' then the download links gets added in the idm queue
+      if you type **idm** then the download links gets added in the idm queue
       
-      if you type something else or nothing at all then it creats a text file, 
-        with all the download links, in the script directory.
+      if you type **txt** then it creats a text file, with all the download links, in the script directory.
       You can use those links to download the files in anyway you want
     ```
   

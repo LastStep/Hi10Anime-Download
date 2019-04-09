@@ -36,4 +36,4 @@ It finds all the animes under the given search query. So if you are only looking
 - get links for different seasons, ovas etc in same page
 - check for other qualities (currently checks [1080p, 720p, 480p] in this order)
 - search more pages
-
+- download from old 'ddl' format like [this](https://hi10anime.com/archives/16951)

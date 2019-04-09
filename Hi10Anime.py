@@ -6,10 +6,8 @@ from bs4 import BeautifulSoup as bs
 
 def login():
   chrome.get('https://hi10anime.com/wp-login.php')
-  emailfield = chrome.find_element_by_id('user_login')
-  emailfield.send_keys(username)
-  passfield = chrome.find_element_by_id('user_pass')
-  passfield.send_keys(password)
+  chrome.find_element_by_id('user_login').send_keys(username)
+  chrome.find_element_by_id('user_pass').send_keys(password)
   chrome.find_element_by_name("wp-submit").click()
   sleep(2)
 
@@ -32,7 +30,7 @@ def search(anime_name):
     soup =  soup.find_all('h1', {'class':'entry-title'})
   except AttributeError:
     print('Anime Not Found')
-    return False
+    return False, False
   for anime_page in soup:
     try:
       print(anime_page.find('a')['href'])
@@ -83,7 +81,7 @@ def run(anime_link):
         try:
           a = episodes.find_element_by_xpath('.//a')
           a.click()
-          if len(chrome.window_handles) > 15:
+          if len(chrome.window_handles) > 50:
             close_tabs()
           episode_links.append(format_link(a.get_attribute('data-href')))
         except:
@@ -120,7 +118,6 @@ def make_file(episode_links, anime_name):
 scriptname, username, password, *anime_name, result = tuple(sys.argv)
 
 if scriptname == os.path.basename(__file__):
-
   try:
     anime_name = int(anime_name[0])
     anime_links = ['https://hi10anime.com/archives/{}'.format(anime_name)]

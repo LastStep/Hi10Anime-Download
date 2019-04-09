@@ -2,7 +2,6 @@
 
 Download Anime from [Hi10Anime](hi10anime.com) using Python
 
-It finds all the animes under the given search query. So if you are only looking for something sppecific then make your search query more specific. 
 
 ## How To Use
 
@@ -19,9 +18,18 @@ It finds all the animes under the given search query. So if you are only looking
    ```
 3) Open cmd and run the script in this format
 
-   >python Hi10Anime.py `username/email` `password` `anime name` `optional argument`
+   >python Hi10Anime.py `username/email` `password` `anime name/id` `optional argument`
     ```
     anime name is the anime you want to download
+        
+        It finds all the animes under the given search query. 
+        So if you are only looking for something sppecific then make your search query more specific. 
+    
+    anime id is the id of the anime page. 
+       
+        You can get it by going to that page on the website and then copying the numbers at the end of the url.
+        The page looks like hi10anime.com/archives/1234 , 1234 being the anime id
+        If you input the anime id then it would only download from that specfic page
 
     optional argument is the specification of the way you want the links
       

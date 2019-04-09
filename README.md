@@ -2,6 +2,8 @@
 
 Download Anime from [Hi10Anime](hi10anime.com) using Python
 
+It finds all the animes under the given search query. So if you are only looking for something sppecific then make your search query more specific. 
+
 ## How To Use
 
 1) Install these modules :
@@ -33,3 +35,5 @@ Download Anime from [Hi10Anime](hi10anime.com) using Python
 
 - get links for different seasons, ovas etc in same page
 - check for other qualities (currently checks [1080p, 720p, 480p] in this order)
+- search more pages
+

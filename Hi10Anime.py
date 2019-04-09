@@ -35,7 +35,9 @@ def search(anime_name):
     return False
   for anime_page in soup:
     try:
+      print(anime_page.find('a')['href'])
       anime_links.append(anime_page.find('a')['href'])
+      print(anime_page.get_text())
       anime_names.append(anime_page.get_text())
     except AttributeError:
       pass
@@ -89,6 +91,17 @@ def run(anime_link):
 
   return episode_links
 
+def format_name(anime_name):
+  anime_name = anime_name[:anime_name.find('[')]
+  anime_name = [i for i in anime_name]
+  for k,char in enumerate(anime_name):
+    c = ord(char)
+    if c == 32 or 48 <= c <= 57 or 65 <= c <= 90 or 97 <= c <= 122:
+      continue
+    else:
+      anime_name[k] = ''
+  return ''.join(anime_name)
+
 def idm(episode_links, anime_name):
   os.chdir('C:\Program Files (x86)\Internet Download Manager')
   print('{} : '.format(anime_name))
@@ -98,7 +111,8 @@ def idm(episode_links, anime_name):
     sleep(1)
 
 def make_file(episode_links, anime_name):
-  with open('{} Download Links.txt'.format(anime_name.title()), 'w') as f:
+  print('Making File {}'.format(format_name(anime_name)))
+  with open('{} Download Links.txt'.format(format_name(anime_name)), 'w') as f:
     for link in episode_links:
       f.write(link)
       f.write('\n')
@@ -119,11 +133,15 @@ if scriptname == os.path.basename(__file__):
   episode_links = []
   if anime_links:
     with webdriver.Chrome() as chrome:
+      chromeOptions = webdriver.ChromeOptions()
+      prefs = {'profile.managed_default_content_settings.images':2, 'disk-cache-size':4096}
+      chromeOptions.add_experimental_option("prefs", prefs)
       login()
       for anime_link in anime_links:
         episode_links.append(run(anime_link))
-    print(len(episode_links), len(anime_names))
     for ep_link, anime_name in zip(episode_links, anime_names):
+      if len(ep_link) == 0:
+        continue
       if result == 'idm':
         idm(ep_link, anime_name)
       elif result == 'txt':

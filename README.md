@@ -34,9 +34,11 @@ Download Anime from [Hi10Anime](hi10anime.com) using Python
     optional argument is the specification of the way you want the links
       
       if you type 'idm' then the download links gets added in the idm queue
+        idm path by default is 'C:\Program Files (x86)\Internet Download Manager'
+        which you can change in the 'def idm' function if your idm is somewhere else
       
       if you type 'txt' then it creats a text file, with all the download links, in the script directory.
-      You can use those links to download the files in anyway you want
+        You can use those links to download the files in anyway you want
     ```
   
 ## To-Do

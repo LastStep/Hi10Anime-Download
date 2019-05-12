@@ -58,10 +58,13 @@ def close_tabs():
 
 def run(anime_link):
   chrome.get(anime_link)
-  sleep(3)
+  sleep(2)
   episode_links = []
   try:
-    chrome.find_element_by_class_name('button-wrapper').click()
+    chrome.find_elements_by_class_name('button-wrapper').click()
+    # chrome.find_elements_by_xpath('//*[contains(@class,"button")]').click()
+    print('click')
+    sleep(3)
     for episodes in chrome.find_elements_by_class_name('ddl'):
       try:
         a = episodes.find_element_by_xpath('.//a')

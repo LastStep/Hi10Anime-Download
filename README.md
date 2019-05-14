@@ -45,5 +45,4 @@ Download Anime from [Hi10Anime](hi10anime.com) using Python
 
 - get links for different seasons, ovas etc in same page
 - check for other qualities (currently checks [1080p, 720p, 480p] in this order)
-- search more pages
 - download from old 'ddl' format like [this](https://hi10anime.com/archives/16951) [this](https://hi10anime.com/archives/44)

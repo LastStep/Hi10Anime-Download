@@ -9,6 +9,7 @@ Download Anime from [Hi10Anime](hi10anime.com) using Python
     - selenium
     - requests
     - bs4
+    - lxml
 
 2) Download [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/)
    ```

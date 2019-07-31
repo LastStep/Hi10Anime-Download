@@ -100,11 +100,7 @@ def run(anime_link):
       for table in tables:
         for episodes in table.find_elements_by_xpath('.//tr'):
           try:
-            a = episodes.find_element_by_xpath('.//a')
-            a.click()
-            if len(chrome.window_handles) > 50:
-              close_tabs()
-            link = a.get_attribute('data-href')
+            link = get_link(episodes)
             if '.mkv' in link:
               episode_links.append(format_link(link))
           except Exception as e:

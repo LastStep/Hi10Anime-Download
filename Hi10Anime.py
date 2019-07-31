@@ -75,9 +75,10 @@ def run(anime_link):
   episode_links = []
   try:
     clicks = chrome.find_elements_by_css_selector('div[class="button-wrapper"]')
+    assert len(clicks) != 0
     for cl in clicks:
       cl.click()
-    sleep(3)
+    sleep(2)
     for episodes in chrome.find_elements_by_class_name('ddl'):
       try:
         link = get_link(episodes)
@@ -85,28 +86,30 @@ def run(anime_link):
           episode_links.append(format_link(link))
       except:
         pass
-  except:
+  except Exception as e:
     for quality in ['1080','720','480']:
       result, quality = Quality(quality)
       if result:
         break
     sleep(1)
-    try:
-      tables = quality.find_elements_by_css_selector('table[class="showLinksTable"]')
-    except:
+    tables = quality.find_elements_by_css_selector('table[class="showLinksTable"]')
+    if len(tables) == 0:
       tables = quality.find_elements_by_css_selector('table[class="episodeTable"]')
+
     try:
       for table in tables:
         for episodes in table.find_elements_by_xpath('.//tr'):
           try:
-            link = get_link(episodes)
+            a = episodes.find_element_by_xpath('.//a')
+            a.click()
+            if len(chrome.window_handles) > 50:
+              close_tabs()
+            link = a.get_attribute('data-href')
             if '.mkv' in link:
               episode_links.append(format_link(link))
           except Exception as e:
-            print(e)
             pass
     except Exception as e:
-      print(e)
       pass
 
   return episode_links
@@ -123,7 +126,7 @@ def format_name(anime_name):
   return ''.join(anime_name)
 
 def idm(episode_links, anime_name):
-  os.chdir('C:\Program Files (x86)\Internet Download Manager')
+  os.chdir(r'C:\Program Files (x86)\Internet Download Manager')
   print('{} : '.format(anime_name))
   for k,link in enumerate(episode_links):
     os.popen('IDMan.exe -a -d {}'.format(link))

@@ -61,7 +61,7 @@ def close_tabs():
     except IndexError:
       return
 
-def get_link():
+def get_link(episodes):
   a = episodes.find_element_by_xpath('.//a')
   a.click()
   if len(chrome.window_handles) > 50:
@@ -80,7 +80,8 @@ def run(anime_link):
     sleep(3)
     for episodes in chrome.find_elements_by_class_name('ddl'):
       try:
-        if get_link().endswith('.mkv'):
+        link = get_link(episodes)
+        if '.mkv' in link:
           episode_links.append(format_link(link))
       except:
         pass
@@ -91,30 +92,21 @@ def run(anime_link):
         break
     sleep(1)
     try:
-      for table in quality.find_elements_by_css_selector('table[class="showLinksTable"]'):
-        try:
-          for episodes in table.find_elements_by_xpath('.//tr'):
-            try:
-              if get_link().endswith('.mkv'):
-                episode_links.append(format_link(link))
-            except:
-              pass
-        except:
-          pass
+      tables = quality.find_elements_by_css_selector('table[class="showLinksTable"]')
     except:
-      pass
+      tables = quality.find_elements_by_css_selector('table[class="episodeTable"]')
     try:
-      for table in quality.find_elements_by_class_name('table[class="episodeTable"]'):
-        try:
-          for episodes in table.find_elements_by_xpath('.//tr'):
-            try:
-              if get_link().endswith('.mkv'):
-                episode_links.append(format_link(link))
-            except:
-              pass
-        except:
-          pass
-    except:
+      for table in tables:
+        for episodes in table.find_elements_by_xpath('.//tr'):
+          try:
+            link = get_link(episodes)
+            if '.mkv' in link:
+              episode_links.append(format_link(link))
+          except Exception as e:
+            print(e)
+            pass
+    except Exception as e:
+      print(e)
       pass
 
   return episode_links

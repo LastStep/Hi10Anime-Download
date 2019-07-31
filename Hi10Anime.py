@@ -61,6 +61,14 @@ def close_tabs():
     except IndexError:
       return
 
+def get_link():
+  a = episodes.find_element_by_xpath('.//a')
+  a.click()
+  if len(chrome.window_handles) > 50:
+    close_tabs()
+  link = a.get_attribute('data-href')
+  return link
+		
 def run(anime_link):
   chrome.get(anime_link)
   sleep(2)
@@ -72,12 +80,7 @@ def run(anime_link):
     sleep(3)
     for episodes in chrome.find_elements_by_class_name('ddl'):
       try:
-        a = episodes.find_element_by_xpath('.//a')
-        a.click()
-        if len(chrome.window_handles) > 50:
-          close_tabs()
-        link = a.get_attribute('data-href')
-        if link.endswith('.mkv'):
+        if get_link().endswith('.mkv'):
           episode_links.append(format_link(link))
       except:
         pass
@@ -88,29 +91,29 @@ def run(anime_link):
         break
     sleep(1)
     try:
-      for table in quality.find_elements_by_class_name('showLinksTable'):
-        for episodes in table.find_elements_by_xpath('.//tr'):
-          try:
-            a = episodes.find_element_by_xpath('.//a')
-            a.click()
-            if len(chrome.window_handles) > 50:
-              close_tabs()
-            episode_links.append(format_link(a.get_attribute('data-href')))
-          except:
-            pass
+      for table in quality.find_elements_by_css_selector('table[class="showLinksTable"]'):
+        try:
+          for episodes in table.find_elements_by_xpath('.//tr'):
+            try:
+              if get_link().endswith('.mkv'):
+                episode_links.append(format_link(link))
+            except:
+              pass
+        except:
+          pass
     except:
       pass
     try:
-      for table in quality.find_elements_by_class_name('episodeTable'):
-        for episodes in table.find_elements_by_xpath('.//tr'):
-          try:
-            a = episodes.find_element_by_xpath('.//a')
-            a.click()
-            if len(chrome.window_handles) > 50:
-              close_tabs()
-            episode_links.append(format_link(a.get_attribute('data-href')))
-          except:
-            pass
+      for table in quality.find_elements_by_class_name('table[class="episodeTable"]'):
+        try:
+          for episodes in table.find_elements_by_xpath('.//tr'):
+            try:
+              if get_link().endswith('.mkv'):
+                episode_links.append(format_link(link))
+            except:
+              pass
+        except:
+          pass
     except:
       pass
 
@@ -159,9 +162,8 @@ if scriptname == os.path.basename(__file__):
   options.add_argument('log-level=3')
   options.add_experimental_option('excludeSwitches', ['enable-automation', 'enable-logging'])
   with webdriver.Chrome(options = options) as chrome:
-    print('Login')
     login()
-    sleep(5)
+    sleep(3)
     print(chrome.find_element_by_xpath('//*[@id="wp-admin-bar-my-account"]/a/span').text)
 
     try:

@@ -1,16 +1,21 @@
 from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from time import sleep
-import os, sys
-import requests
+import os, sys, requests
 from bs4 import BeautifulSoup as bs
 
 def login():
-  chrome.get('https://hi10anime.com/wp-login.php')
-  chrome.find_element_by_id('user_login').send_keys(username)
-  chrome.find_element_by_id('user_pass').send_keys(password)
-  chrome.find_element_by_name("wp-submit").click()
+  chrome.get('https://hi10anime.com/login')
+  sleep(1)
+  chrome.find_element_by_id('user_login').click()
+  sleep(1)
+  chrome.find_element_by_id('user_login').send_keys(username + Keys.TAB + password)
+  sleep(1)
+  chrome.find_element_by_xpath('//*[@id="rememberme"]').click()
+  sleep(1)
+  chrome.find_element_by_xpath('//*[@id="wp-submit"]').click()
   sleep(2)
 
 def format_link(link):
@@ -58,14 +63,22 @@ def close_tabs():
 
 def run(anime_link):
   chrome.get(anime_link)
-  sleep(3)
+  sleep(2)
   episode_links = []
   try:
-    chrome.find_element_by_class_name('button-wrapper').click()
+    clicks = chrome.find_elements_by_css_selector('div[class="button-wrapper"]')
+    for cl in clicks:
+      cl.click()
+    sleep(3)
     for episodes in chrome.find_elements_by_class_name('ddl'):
       try:
         a = episodes.find_element_by_xpath('.//a')
         a.click()
+        if len(chrome.window_handles) > 50:
+          close_tabs()
+        link = a.get_attribute('data-href')
+        if link.endswith('.mkv'):
+          episode_links.append(format_link(link))
       except:
         pass
   except:
@@ -132,15 +145,32 @@ def make_file(episode_links, anime_name):
 scriptname, username, password, *anime_name, result = tuple(sys.argv)
 
 if scriptname == os.path.basename(__file__):
-  with webdriver.Chrome() as chrome:
+  user = os.getenv('USERNAME')
+  userProfile = 'C:\\Users\\' + user + '\\AppData\\Local\\Google\\Chrome\\User Data\\Default'
+  options = webdriver.ChromeOptions()
+  # options.add_argument('user-data-dir={}'.format(userProfile))
+  options.add_argument(
+     '--user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"')
+  options.add_argument('--no-sandbox')
+  options.add_argument('--start-maximized')
+  options.add_argument('--window-size=1920,1080')
+  #options.add_argument('headless')
+  options.add_argument('--disable-dev-shm-usage')
+  options.add_argument('log-level=3')
+  options.add_experimental_option('excludeSwitches', ['enable-automation', 'enable-logging'])
+  with webdriver.Chrome(options = options) as chrome:
+    print('Login')
     login()
+    sleep(5)
+    print(chrome.find_element_by_xpath('//*[@id="wp-admin-bar-my-account"]/a/span').text)
+
     try:
       anime_name = int(anime_name[0])
       anime_links = ['https://hi10anime.com/archives/{}'.format(anime_name)]
       chrome.get(anime_links[0])
       soup = bs(chrome.page_source, 'lxml')
       anime_names = [soup.find('h1', {'class':'entry-title'}).get_text()]
-    except ValueError:
+    except:
       anime_name = ' '.join(anime_name)
       anime_page = search_category(anime_name)
       if not anime_page:
